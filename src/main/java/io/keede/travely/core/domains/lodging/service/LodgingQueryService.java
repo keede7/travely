@@ -4,21 +4,24 @@ import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 * @author keede
 * Created on 2023/10/21
 */
 @Service
-public class LodgingCommandService {
+public class LodgingQueryService {
 
     private final LodgingRepository lodgingRepository;
 
-    public LodgingCommandService(final LodgingRepository lodgingRepository) {
+    public LodgingQueryService(final LodgingRepository lodgingRepository) {
         this.lodgingRepository = lodgingRepository;
     }
 
-    public void create(Lodging entity) {
-        lodgingRepository.save(entity);
+
+    public List<Lodging> getLodgings() {
+        return lodgingRepository.findAll();
     }
 }
