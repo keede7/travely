@@ -26,19 +26,19 @@ public abstract class BaseEntity {
     private boolean isDelete;
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public LocalDateTime getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public LocalDateTime getModifiedAt() {
-        return modifiedAt;
+        return this.modifiedAt;
     }
 
     public boolean isDelete() {
-        return isDelete;
+        return this.isDelete;
     }
 
     public void remove() {
