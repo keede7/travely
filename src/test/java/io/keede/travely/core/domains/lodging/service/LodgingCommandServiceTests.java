@@ -1,18 +1,17 @@
 package io.keede.travely.core.domains.lodging.service;
 
+import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
 
 /**
@@ -37,13 +36,17 @@ public class LodgingCommandServiceTests {
         final LocalDateTime from = LocalDateTime.of(2023, 9, 10, 0, 0, 0);
         final LocalDateTime to = LocalDateTime.of(2023, 9, 12, 0, 0, 0);
 
-        Lodging entity = Lodging.of(lodgingName, maxUserCount, address, from, to);
+        LodgingDto.Create create = new LodgingDto.Create(lodgingName, maxUserCount, address, from, to);
+        Lodging entity = create.toEntity();
 
-        given(this.lodgingRepository.save(entity)).willReturn(entity);
+        LodgingDto.Information information = entity.toInformation();
 
-        sut.create(entity);
+        given(this.lodgingRepository.save(any(Lodging.class))).willReturn(entity);
 
-        then(this.lodgingRepository).should(times(1)).save(entity);
+        LodgingDto.Information result = sut.create(create);
+
+        then(this.lodgingRepository).should(times(1)).save(any(Lodging.class));
+        assertThat(result.name()).isEqualTo(information.name());
 
     }
 

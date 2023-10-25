@@ -1,6 +1,7 @@
 package io.keede.travely.core.domains.lodging.entity;
 
 import io.keede.travely.core.config.entity.BaseEntity;
+import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
 * @author keede
@@ -80,5 +82,20 @@ public class Lodging extends BaseEntity {
 
     public LocalDateTime getTo() {
         return this.to;
+    }
+
+    public LodgingDto.Information toInformation() {
+        return new LodgingDto.Information(
+                this.getId(),
+                this.lodgingName,
+                this.maxUserCount,
+                this.address,
+                bindToTimes(this.from),
+                bindToTimes(this.to)
+        );
+    }
+
+    private String bindToTimes(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

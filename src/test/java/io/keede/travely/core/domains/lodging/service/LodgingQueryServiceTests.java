@@ -1,10 +1,8 @@
 package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -12,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
 
 /**
@@ -39,6 +37,5 @@ public class LodgingQueryServiceTests {
         assertThat(lodgings).isNotNull();
 
     }
-
 
 }

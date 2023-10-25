@@ -1,5 +1,6 @@
 package io.keede.travely.core.domains.lodging.service;
 
+import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,12 @@ public class LodgingCommandService {
         this.lodgingRepository = lodgingRepository;
     }
 
-    public void create(Lodging entity) {
+    public LodgingDto.Information create(LodgingDto.Create create) {
+
+        Lodging entity = create.toEntity();
+
         lodgingRepository.save(entity);
+
+        return entity.toInformation();
     }
 }
