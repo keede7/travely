@@ -1,5 +1,6 @@
 package io.keede.travely.core.domains.lodging.service;
 
+import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +32,12 @@ public class LodgingQueryServiceTests {
 
         given(lodgingRepository.findAll()).willReturn(new ArrayList<>());
 
-        List lodgings = sut.getLodgings();
+        List<Lodging> lodgings = sut.getLodgings();
 
-        then(lodgingRepository).should(times(1)).findAll();
+        then(lodgingRepository)
+                .should(times(1))
+                .findAll();
+
         assertThat(lodgings).isNotNull();
 
     }

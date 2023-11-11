@@ -41,11 +41,17 @@ public class LodgingCommandServiceTests {
 
         LodgingDto.Information information = entity.toInformation();
 
-        given(this.lodgingRepository.save(any(Lodging.class))).willReturn(entity);
+        given(this.lodgingRepository.save(
+                any(Lodging.class))
+        )
+                .willReturn(entity);
 
         LodgingDto.Information result = sut.create(create);
 
-        then(this.lodgingRepository).should(times(1)).save(any(Lodging.class));
+        then(this.lodgingRepository)
+                .should(times(1))
+                .save(any(Lodging.class));
+
         assertThat(result.name()).isEqualTo(information.name());
 
     }
