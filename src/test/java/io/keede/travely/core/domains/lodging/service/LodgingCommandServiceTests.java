@@ -3,6 +3,7 @@ package io.keede.travely.core.domains.lodging.service;
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.lodging.fixture.LodgingFixture;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,13 +34,9 @@ public class LodgingCommandServiceTests {
     @Test
     void 숙소생성_성공() {
 
-        final String lodgingName = "숙소1";
-        final int maxUserCount = 7;
-        final String address = " 경기도 부천시 원미구";
-        final LocalDateTime from = LocalDateTime.of(2023, 9, 10, 0, 0, 0);
-        final LocalDateTime to = LocalDateTime.of(2023, 9, 12, 0, 0, 0);
+        LodgingDto.Create create = LodgingFixture.createLodgingBuilder()
+                .build();
 
-        LodgingDto.Create create = new LodgingDto.Create(lodgingName, maxUserCount, address, from, to);
         Lodging entity = create.toEntity();
 
         LodgingDto.Information information = entity.toInformation();
