@@ -40,4 +40,9 @@ public class LodgingDto {
             String to
     ) {
     }
+
+    public record Remove(
+            Long id
+    ) {
+    }
 }

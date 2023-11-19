@@ -3,6 +3,8 @@ package io.keede.travely.core.domains.lodging.service;
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
@@ -19,6 +22,7 @@ import static org.mockito.BDDMockito.*;
 * Created on 2023/10/21
 */
 @ExtendWith(MockitoExtension.class)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class LodgingCommandServiceTests {
 
     @Mock
@@ -56,4 +60,20 @@ public class LodgingCommandServiceTests {
 
     }
 
+    @Test
+    void 숙소삭제_성공() {
+
+        LodgingDto.Remove remove = mock(LodgingDto.Remove.class);
+
+        Lodging mock = mock(Lodging.class);
+
+        given(this.lodgingRepository.findById(anyLong()))
+                .willReturn(Optional.of(mock));
+
+        this.sut.remove(remove);
+
+        then(this.lodgingRepository).should(times(1))
+                .findById(anyLong());
+        then(mock).should(times(1)).remove();
+    }
 }

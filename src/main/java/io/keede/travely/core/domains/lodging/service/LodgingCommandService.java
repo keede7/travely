@@ -3,7 +3,10 @@ package io.keede.travely.core.domains.lodging.service;
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.exception.ErrorResponse;
+import io.keede.travely.core.exception.service.BusinessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -19,6 +22,7 @@ public class LodgingCommandService {
         this.lodgingRepository = lodgingRepository;
     }
 
+    @Transactional
     public LodgingDto.Information create(LodgingDto.Create create) {
 
         Lodging entity = create.toEntity();
@@ -26,5 +30,22 @@ public class LodgingCommandService {
         lodgingRepository.save(entity);
 
         return entity.toInformation();
+    }
+
+    @Transactional
+    public void remove(LodgingDto.Remove remove) {
+
+        final Long removeId = remove.id();
+
+        Lodging entity = lodgingRepository.findById(removeId)
+                .orElseThrow(
+                        () -> new BusinessException(
+                                ErrorResponse.COMMON,
+                                String.format("to Remove Id : %d", removeId)
+                        )
+                );
+
+        entity.remove();
+
     }
 }
