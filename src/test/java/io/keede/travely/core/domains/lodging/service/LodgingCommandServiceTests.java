@@ -4,6 +4,8 @@ import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import io.keede.travely.core.domains.lodging.fixture.LodgingFixture;
+import io.keede.travely.core.exception.service.BusinessException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,9 +20,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
 
 /**
-* @author keede
-* Created on 2023/10/21
-*/
+ * @author keede
+ * Created on 2023/10/21
+ */
 @ExtendWith(MockitoExtension.class)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class LodgingCommandServiceTests {
@@ -71,5 +73,23 @@ public class LodgingCommandServiceTests {
         then(this.lodgingRepository).should(times(1))
                 .findById(anyLong());
         then(mock).should(times(1)).remove();
+    }
+
+    @Test
+    void 숙소_조회_실패로_인한_삭제_기능_예외_발생() {
+
+        LodgingDto.Remove remove = mock(LodgingDto.Remove.class);
+
+        Lodging mock = mock(Lodging.class);
+
+        given(this.lodgingRepository.findById(anyLong()))
+                .willThrow(BusinessException.class);
+
+        Assertions.assertThrows(
+                BusinessException.class,
+                () -> this.sut.remove(remove)
+        );
+        then(mock).should(times(0)).remove();
+
     }
 }
