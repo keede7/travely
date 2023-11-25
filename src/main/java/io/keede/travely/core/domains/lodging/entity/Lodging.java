@@ -22,15 +22,16 @@ import java.time.format.DateTimeFormatter;
 @AttributeOverride(name = "id", column = @Column(name = "lodging_id"))
 public class Lodging extends BaseEntity {
 
+    @Column(name = "lodging_name", nullable = false)
     private String lodgingName;
-    private int maxUserCount;
+    private Integer maxUserCount;
     private String address;
     private LocalDateTime from;
     private LocalDateTime to;
 
     public Lodging(
             final String lodgingName,
-            final int maxUserCount,
+            final Integer maxUserCount,
             final String address,
             final LocalDateTime from,
             final LocalDateTime to) {
@@ -43,7 +44,7 @@ public class Lodging extends BaseEntity {
 
     public static Lodging of(
             final String lodgingName,
-            final int maxUserCount,
+            final Integer maxUserCount,
             final String address,
             final LocalDateTime from,
             final LocalDateTime to) {
@@ -68,7 +69,7 @@ public class Lodging extends BaseEntity {
         return this.lodgingName;
     }
 
-    public int getMaxUserCount() {
+    public Integer getMaxUserCount() {
         return this.maxUserCount;
     }
 

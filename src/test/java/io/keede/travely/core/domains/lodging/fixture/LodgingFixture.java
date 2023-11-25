@@ -12,7 +12,7 @@ public final class LodgingFixture {
 
     private static final String NAME = "테스트숙소";
 
-    private static final int MAX_USER_COUNT = 7;
+    private static final Integer MAX_USER_COUNT = 7;
 
     private static final String ADDRESS = "경기도 부천시 원미구";
 

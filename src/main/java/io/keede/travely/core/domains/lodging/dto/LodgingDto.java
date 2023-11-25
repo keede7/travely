@@ -13,7 +13,7 @@ public class LodgingDto {
 
     public record Create(
             String name,
-            int maxUserCount,
+            Integer maxUserCount,
             String address,
             @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", locale = "Asia/Seoul", shape = JsonFormat.Shape.STRING)
             LocalDateTime from,
@@ -34,7 +34,7 @@ public class LodgingDto {
     public record Information(
             Long id,
             String name,
-            int maxUserCount,
+            Integer maxUserCount,
             String address,
             String from,
             String to
