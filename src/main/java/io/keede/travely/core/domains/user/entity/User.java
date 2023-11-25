@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 * Created on 2023/11/25
 */
 @Entity
-@Table(name = "lodging_t")
+@Table(name = "user_t")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
 public class User extends BaseEntity {
