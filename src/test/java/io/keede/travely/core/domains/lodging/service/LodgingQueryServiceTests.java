@@ -1,12 +1,11 @@
 package io.keede.travely.core.domains.lodging.service;
 
+import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,7 @@ import static org.mockito.BDDMockito.*;
 * @author keede
 * Created on 2023/10/21
 */
-@ExtendWith(MockitoExtension.class)
+@BusinessMockTestConfiguration
 public class LodgingQueryServiceTests {
 
     @Mock

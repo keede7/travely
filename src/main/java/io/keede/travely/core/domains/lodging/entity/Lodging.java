@@ -22,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 @AttributeOverride(name = "id", column = @Column(name = "lodging_id"))
 public class Lodging extends BaseEntity {
 
-    @Column(name = "lodging_name", nullable = false)
     private String lodgingName;
     private Integer maxUserCount;
     private String address;
