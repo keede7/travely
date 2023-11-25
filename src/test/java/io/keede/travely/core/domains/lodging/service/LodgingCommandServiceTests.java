@@ -7,6 +7,7 @@ import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import io.keede.travely.core.domains.lodging.fixture.LodgingFixture;
 import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,8 +27,14 @@ public class LodgingCommandServiceTests {
     @Mock
     private LodgingRepository lodgingRepository;
 
-    @InjectMocks
     private LodgingCommandService sut;
+
+    @BeforeEach
+    void setUp() {
+        this.sut = new LodgingCommandService(
+                this.lodgingRepository
+        );
+    }
 
     @Test
     void 숙소생성_성공() {

@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BusinessException extends RuntimeException {
 
+    public BusinessException() {
+        super(ErrorResponse.COMMON.getMessage());
+    }
+
     public BusinessException(final ErrorResponse errorResponse) {
         super(errorResponse.getMessage());
     }

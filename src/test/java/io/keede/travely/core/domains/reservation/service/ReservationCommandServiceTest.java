@@ -1,0 +1,70 @@
+package io.keede.travely.core.domains.reservation.service;
+
+import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
+import io.keede.travely.core.domains.lodging.entity.Lodging;
+import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.reservation.dto.ReservationDto;
+import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
+import io.keede.travely.core.domains.user.entity.User;
+import io.keede.travely.core.domains.user.entity.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+
+/**
+* @author keede
+* Created on 2023/11/25
+*/
+@BusinessMockTestConfiguration
+class ReservationCommandServiceTest {
+
+    @Mock
+    private ReservationRepository reservationRepository;
+    @Mock
+    private LodgingRepository lodgingRepository;
+    @Mock
+    private UserRepository userRepository;
+
+    private ReservationCommandService sut;
+
+    @BeforeEach
+    void setUp() {
+        this.sut = new ReservationCommandService(
+                this.reservationRepository,
+                this.lodgingRepository,
+                this.userRepository
+        );
+    }
+
+    @Test
+    void 예약생성_성공() {
+
+        final Lodging lodging = mock(Lodging.class);
+        final User user = mock(User.class);
+
+        final ReservationDto.Create create = mock(ReservationDto.Create.class);
+
+        given(this.lodgingRepository.findById(anyLong()))
+                .willReturn(Optional.of(lodging));
+        given(this.userRepository.findById(anyLong()))
+                .willReturn(Optional.of(user));
+
+        this.sut.create(create);
+
+        then(this.lodgingRepository).should(times(1))
+                .findById(anyLong());
+        then(this.userRepository).should(times(1))
+                .findById(anyLong());
+
+    }
+
+}
