@@ -3,10 +3,7 @@ package io.keede.travely.core.domains.reservation.entity;
 import io.keede.travely.core.config.entity.BaseEntity;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.user.entity.User;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -21,8 +18,29 @@ import lombok.NoArgsConstructor;
 @AttributeOverride(name = "id", column = @Column(name = "reservation_id"))
 public class Reservation extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+    @JoinColumn(name = "lodging_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Lodging lodging;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private User user;
+
+    // 예약 상태 관련 도메인
+
+    public Reservation(
+            final Lodging lodging,
+            final User user
+    ) {
+        this.lodging = lodging;
+        this.user = user;
+    }
+
     // 예약하기
-    public void reserve(Lodging lodging, User user) {
+    public void reserve(
+            final Lodging lodging,
+            final User user
+    ) {
 
     }
 
@@ -32,7 +50,7 @@ public class Reservation extends BaseEntity {
     }
 
     // 예약 변경하기
-    public void change(Lodging lodging) {
+    public void change(final Lodging lodging) {
 
     }
 
