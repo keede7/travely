@@ -3,6 +3,7 @@ package io.keede.travely.core.domains.lodging.service;
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,8 +24,14 @@ public class LodgingQueryServiceTests {
     @Mock
     private LodgingRepository lodgingRepository;
 
-    @InjectMocks
     private LodgingQueryService sut;
+
+    @BeforeEach
+    void setUp() {
+        this.sut = new LodgingQueryService(
+                this.lodgingRepository
+        );
+    }
 
     @Test
     void 숙소_전체_조회() {
