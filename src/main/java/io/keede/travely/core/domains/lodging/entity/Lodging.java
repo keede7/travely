@@ -25,7 +25,9 @@ public class Lodging extends BaseEntity {
     private String lodgingName;
     private Integer maxUserCount;
     private String address;
+    @Column(name = "from_at")
     private LocalDateTime from;
+    @Column(name = "to_at")
     private LocalDateTime to;
 
     public Lodging(
