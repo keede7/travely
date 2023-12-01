@@ -37,6 +37,8 @@ public class ReservationCommandService {
         Lodging lodging = this.lodgingRepository.findById(create.lodgingId())
                 .orElseThrow(BusinessException::new);
 
+        lodging.checkToAllowReservation();
+
         User user = this.userRepository.findById(create.userId())
                 .orElseThrow(BusinessException::new);
 
