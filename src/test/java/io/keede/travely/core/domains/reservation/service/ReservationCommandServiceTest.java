@@ -8,17 +8,17 @@ import io.keede.travely.core.domains.reservation.entity.Reservation;
 import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
 import io.keede.travely.core.domains.user.entity.User;
 import io.keede.travely.core.domains.user.entity.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -71,6 +71,26 @@ class ReservationCommandServiceTest {
                 .findById(anyLong());
         then(this.reservationRepository).should(times(1))
                 .save(any(Reservation.class));
+
+    }
+
+    @Test
+    void 인원_초과로_예약_실패() {
+
+        final Lodging lodging = mock(Lodging.class);
+
+        final ReservationDto.Create create = mock(ReservationDto.Create.class);
+
+        given(this.lodgingRepository.findById(anyLong()))
+                .willReturn(Optional.of(lodging));
+
+        willThrow(BusinessException.class).given(lodging)
+                .checkToAllowReservation();
+
+        assertThrows(
+                BusinessException.class,
+                () -> this.sut.create(create)
+        );
 
     }
 

@@ -2,21 +2,27 @@ package io.keede.travely.core.domains.lodging.entity;
 
 import io.keede.travely.core.config.entity.BaseEntity;
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import io.keede.travely.core.domains.reservation.entity.Reservation;
+import io.keede.travely.core.exception.ErrorResponse;
+import io.keede.travely.core.exception.service.BusinessException;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
 * @author keede
 * Created on 2023/10/21
 */
 @Entity
+@Getter
 @Table(name = "lodging_t")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "lodging_id"))
@@ -29,6 +35,8 @@ public class Lodging extends BaseEntity {
     private LocalDateTime from;
     @Column(name = "to_at")
     private LocalDateTime to;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lodging")
+    private Set<Reservation> reservations = new HashSet<>();
 
     public Lodging(
             final String lodgingName,
@@ -66,26 +74,6 @@ public class Lodging extends BaseEntity {
 
     }
 
-    public String getLodgingName() {
-        return this.lodgingName;
-    }
-
-    public Integer getMaxUserCount() {
-        return this.maxUserCount;
-    }
-
-    public String getAddress() {
-        return this.address;
-    }
-
-    public LocalDateTime getFrom() {
-        return this.from;
-    }
-
-    public LocalDateTime getTo() {
-        return this.to;
-    }
-
     public LodgingDto.Information toInformation() {
         return new LodgingDto.Information(
                 this.getId(),
@@ -99,5 +87,15 @@ public class Lodging extends BaseEntity {
 
     private String bindToTimes(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public void checkToAllowReservation() {
+        if(this.isExceedMaximumUserCount()) {
+            throw new BusinessException(ErrorResponse.EXCEED_RESERVATION_USER_COUNT);
+        }
+    }
+
+    private boolean isExceedMaximumUserCount() {
+        return this.reservations.size() >= this.maxUserCount;
     }
 }
