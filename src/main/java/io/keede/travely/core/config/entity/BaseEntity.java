@@ -1,5 +1,6 @@
 package io.keede.travely.core.config.entity;
 
+import io.keede.travely.core.domains.lodging.entity.converter.DeleteStatusConverter;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public abstract class BaseEntity {
     private LocalDateTime modifiedAt;
 
     @Column(name = "is_delete")
+    @Convert(converter = DeleteStatusConverter.class)
     private boolean isDelete;
 
     public Long getId() {

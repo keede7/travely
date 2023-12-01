@@ -36,13 +36,14 @@ public class LodgingQueryServiceTests {
     @Test
     void 숙소_전체_조회() {
 
-        given(lodgingRepository.findAll()).willReturn(new ArrayList<>());
+        given(lodgingRepository.findLodgingAll())
+                .willReturn(new ArrayList<>());
 
         List<Lodging> lodgings = sut.getLodgings();
 
         then(lodgingRepository)
                 .should(times(1))
-                .findAll();
+                .findLodgingAll();
 
         assertThat(lodgings).isNotNull();
 

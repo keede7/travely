@@ -20,6 +20,6 @@ public class LodgingQueryService {
     }
 
     public List<Lodging> getLodgings() {
-        return lodgingRepository.findAll();
+        return lodgingRepository.findLodgingAll();
     }
 }
