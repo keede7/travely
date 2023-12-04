@@ -1,5 +1,9 @@
 package io.keede.travely.core.domains.reservation.dto;
 
+/**
+ * @author kyh
+ * Created on 2023/11/25
+ */
 public class ReservationDto {
     public record Create(
             Long lodgingId,
@@ -7,4 +11,11 @@ public class ReservationDto {
     ) {
 
     }
+
+    public record MyReservation(
+        Long userId
+    ) {
+
+    }
+
 }
