@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 /**
 * @author keede
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 */
 @Entity
 @Table(name = "user_t")
+@Where(clause = "is_delete = 'N'")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "user_id"))
 public class User extends BaseEntity {

@@ -14,7 +14,6 @@ public interface LodgingRepository extends JpaRepository<Lodging, Long> {
 
     @EntityGraph(attributePaths = { "reservations" }, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT lodging " +
-            "FROM Lodging lodging " +
-            "WHERE lodging.isDelete = false ")
+            "FROM Lodging lodging ")
     List<Lodging> findLodgingAll();
 }

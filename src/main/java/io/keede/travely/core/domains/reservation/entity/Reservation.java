@@ -6,6 +6,7 @@ import io.keede.travely.core.domains.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 /**
 * @author keede
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "reservation_t")
+@Where(clause = "is_delete = 'N'")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "reservation_id"))
 public class Reservation extends BaseEntity {
@@ -27,7 +29,6 @@ public class Reservation extends BaseEntity {
     private User user;
 
     // 예약 상태 관련 도메인
-
     public Reservation(
             final Lodging lodging,
             final User user
