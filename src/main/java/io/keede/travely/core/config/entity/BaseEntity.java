@@ -2,6 +2,7 @@ package io.keede.travely.core.config.entity;
 
 import io.keede.travely.core.domains.lodging.entity.converter.DeleteStatusConverter;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 * @author keede
 * Created on 2023/10/15
 */
+@Getter
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -26,18 +28,6 @@ public abstract class BaseEntity {
     @Column(name = "is_delete")
     @Convert(converter = DeleteStatusConverter.class)
     private boolean isDelete;
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return this.modifiedAt;
-    }
 
     public boolean isDelete() {
         return this.isDelete;
