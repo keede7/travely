@@ -20,3 +20,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
+jwt:
+  secret: a2VlZGVKc29uV2ViVG9rZW4=
+  token-validity-in-seconds: 300
