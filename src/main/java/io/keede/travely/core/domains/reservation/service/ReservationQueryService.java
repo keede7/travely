@@ -8,6 +8,8 @@ import io.keede.travely.core.exception.service.BusinessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author kyh
  * Created on 2023/12/04
@@ -22,12 +24,21 @@ public class ReservationQueryService {
     }
 
     @Transactional(readOnly = true)
-    public Reservation getMyReservation(ReservationDto.MyReservation myReservation) {
-        Long userId = myReservation.userId();
+    public Reservation getMyReservation(ReservationDto.MyReservation myReservationDto) {
+        Long reservationId = myReservationDto.reservationId();
 
-        Reservation reservation = this.reservationRepository.findById(userId)
+        Reservation reservation = this.reservationRepository.findMyReservation(reservationId)
                 .orElseThrow(BusinessException::new);
 
         return reservation;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Reservation> getMyReservations(ReservationDto.MyReservations myReservationsDto) {
+        Long userId = myReservationsDto.userId();
+
+        List<Reservation> reservations = this.reservationRepository.findMyReservations(userId);
+
+        return reservations;
     }
 }

@@ -6,14 +6,17 @@ import io.keede.travely.core.domains.reservation.entity.Reservation;
 import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+/**
+* @author keede
+* Created on 2023/12/4
+*/
 @BusinessMockTestConfiguration
 class ReservationQueryServiceTest {
 
@@ -34,13 +37,28 @@ class ReservationQueryServiceTest {
 
         final ReservationDto.MyReservation myReservation = mock(ReservationDto.MyReservation.class);
 
-        given(this.reservationRepository.findById(anyLong()))
+        given(this.reservationRepository.findMyReservation(anyLong()))
                 .willReturn(Optional.of(mock(Reservation.class)));
 
         this.sut.getMyReservation(myReservation);
 
         then(this.reservationRepository).should(times(1))
-                .findById(anyLong());
+                .findMyReservation(anyLong());
+
+    }
+
+    @Test
+    void 내_모든_예약_조회_성공() {
+
+        final ReservationDto.MyReservations myReservations = mock(ReservationDto.MyReservations.class);
+
+        given(this.reservationRepository.findMyReservations(anyLong()))
+                .willReturn(mock(List.class));
+
+        this.sut.getMyReservations(myReservations);
+
+        then(this.reservationRepository).should(times(1))
+                .findMyReservations(anyLong());
 
     }
 }

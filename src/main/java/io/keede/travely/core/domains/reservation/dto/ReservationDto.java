@@ -13,9 +13,14 @@ public class ReservationDto {
     }
 
     public record MyReservation(
-        Long userId
+            Long reservationId
     ) {
 
     }
 
+    public record MyReservations(
+            Long userId
+    ) {
+
+    }
 }
