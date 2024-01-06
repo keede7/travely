@@ -22,5 +22,5 @@ spring:
     password:
 
 jwt:
-  secret: a2VlZGVKc29uV2ViVG9rZW4=
+  secret: keedeTravelyApplicationJwtSecretKeyPropertiesByLocal
   token-validity-in-seconds: 300

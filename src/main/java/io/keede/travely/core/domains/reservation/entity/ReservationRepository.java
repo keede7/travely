@@ -20,7 +20,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "FROM Reservation reservation " +
             "WHERE reservation.user.id = :userId"
     )
-    List<Reservation> findMyReservations(@Param("reservationId") Long userId);
+    List<Reservation> findMyReservations(@Param("userId") Long userId);
 
     @EntityGraph(attributePaths = {"lodging", "user"})
     @Query(value =
