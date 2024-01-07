@@ -1,6 +1,6 @@
 package io.keede.travely.core.config.entity;
 
-import io.keede.travely.core.domains.lodging.entity.converter.DeleteStatusConverter;
+import io.keede.travely.core.config.entity.converter.DeleteStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 

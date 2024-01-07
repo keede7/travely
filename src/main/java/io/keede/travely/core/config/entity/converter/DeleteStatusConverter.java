@@ -1,4 +1,4 @@
-package io.keede.travely.core.domains.lodging.entity.converter;
+package io.keede.travely.core.config.entity.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
