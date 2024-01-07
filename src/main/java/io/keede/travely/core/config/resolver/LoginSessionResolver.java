@@ -1,4 +1,4 @@
-package io.keede.travely.core.config;
+package io.keede.travely.core.config.resolver;
 
 import io.keede.travely.core.config.jwt.JwtTokenProvider;
 import io.keede.travely.core.web.security.dto.LoginUser;

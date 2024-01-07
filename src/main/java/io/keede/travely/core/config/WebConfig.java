@@ -2,6 +2,7 @@ package io.keede.travely.core.config;
 
 
 import io.keede.travely.core.config.jwt.JwtTokenProvider;
+import io.keede.travely.core.config.resolver.LoginSessionResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

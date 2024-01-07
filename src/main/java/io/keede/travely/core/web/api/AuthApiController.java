@@ -1,4 +1,4 @@
-package io.keede.travely.core.web.security;
+package io.keede.travely.core.web.api;
 
 
 import io.keede.travely.core.config.jwt.JwtTokenProvider;
