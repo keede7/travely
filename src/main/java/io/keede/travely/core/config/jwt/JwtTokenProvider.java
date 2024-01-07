@@ -3,13 +3,16 @@ package io.keede.travely.core.config.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.keede.travely.core.web.security.dto.LoginDto;
+import io.keede.travely.core.domains.user.entity.User;
+import io.keede.travely.core.domains.user.entity.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Map;
+import java.util.Date;
 
 /**
 * @author keede
@@ -19,15 +22,21 @@ import java.util.Map;
 @Component
 public final class JwtTokenProvider implements InitializingBean {
 
+    private final UserRepository userRepository;
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long accessTokenValidityInMilliseconds;
+    private final long refreshTokenValidityInMilliseconds;
     private SecretKey key;
 
     public JwtTokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            final UserRepository userRepository,
+            @Value("${jwt.secret}") final String secret,
+            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds
+    ) {
+        this.userRepository = userRepository;
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000; // 토큰 만료시간에 사용,
+        this.accessTokenValidityInMilliseconds = tokenValidityInSeconds * 1000; // 토큰 만료시간에 사용,
+        this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 5000;
     }
 
     @Override
@@ -36,21 +45,54 @@ public final class JwtTokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createJwtToken() {
-        return Jwts.builder()
+    public Token createJwtToken(
+            LoginDto loginDto
+    ) {
+
+        log.info("loginDto : {}", loginDto);
+
+        User user = this.userRepository.findUserByEmail(loginDto.email())
+                .orElseThrow(
+                        () -> new RuntimeException("등록되지 않은 사용자입니다.")
+                );
+
+        Date createdAt = new Date();
+
+        Date accessTokenExpiredTime = new Date(createdAt.getTime() + this.accessTokenValidityInMilliseconds);
+        Date refreshTokenExpiredTime = new Date(createdAt.getTime() + this.refreshTokenValidityInMilliseconds);
+
+        // TODO : password 유효성 검사
+
+        String accessToken = Jwts.builder()
+                .issuedAt(createdAt)
                 .signWith(this.key, Jwts.SIG.HS256)
-                .header().add("app", "travely")
-                .and()
-                .claims(Map.of("sub", "테스터"))
+                .issuer(user.getEmail())
+                .expiration(accessTokenExpiredTime)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .issuedAt(createdAt)
+                .signWith(this.key, Jwts.SIG.HS256)
+                .issuer(user.getEmail())
+                .expiration(refreshTokenExpiredTime)
+                .compact();
+
+        return new Token(
+                accessToken,
+                refreshToken
+        );
     }
 
-    public Jws<Claims> bindAuthorizationToken(String token) {
+    public String bindAuthorizationToken(
+            String token
+    ) {
         try {
             return Jwts.parser()
                     .verifyWith(this.key)
                     .build()
-                    .parseSignedClaims(token);
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getIssuer();
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             e.printStackTrace();
             log.debug("잘못된 JWT 서명입니다.");
