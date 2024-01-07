@@ -3,6 +3,7 @@ package io.keede.travely.core.domains.reservation.entity;
 import io.keede.travely.core.config.entity.BaseEntity;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.user.entity.User;
+import io.keede.travely.core.external.payment.publish.RefundPayment;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -37,22 +38,20 @@ public class Reservation extends BaseEntity {
         this.user = user;
     }
 
-    // 예약하기
-    public void reserve(
-            final Lodging lodging,
-            final User user
-    ) {
-
-    }
-
     // 예약 취소하기
     public void cancel() {
-
+        this.remove();
     }
 
     // 예약 변경하기
     public void change(final Lodging lodging) {
 
+    }
+
+    public RefundPayment toRefundPayment() {
+        return new RefundPayment(
+                this.getId()
+        );
     }
 
 }
