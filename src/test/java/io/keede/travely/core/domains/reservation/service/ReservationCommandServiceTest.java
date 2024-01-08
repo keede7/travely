@@ -12,6 +12,7 @@ import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 
@@ -36,6 +37,9 @@ class ReservationCommandServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
+
     private ReservationCommandService sut;
 
     @BeforeEach
@@ -43,7 +47,8 @@ class ReservationCommandServiceTest {
         this.sut = new ReservationCommandService(
                 this.reservationRepository,
                 this.lodgingRepository,
-                this.userRepository
+                this.userRepository,
+                this.applicationEventPublisher
         );
     }
 

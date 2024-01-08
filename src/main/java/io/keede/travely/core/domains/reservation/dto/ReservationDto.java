@@ -12,6 +12,13 @@ public class ReservationDto {
 
     }
 
+    public record Cancel(
+            Long reservationId,
+            Long userId
+    ) {
+
+    }
+
     public record MyReservation(
             Long reservationId
     ) {
