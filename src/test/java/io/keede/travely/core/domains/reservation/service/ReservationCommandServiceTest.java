@@ -99,4 +99,26 @@ class ReservationCommandServiceTest {
 
     }
 
+    @Test
+    void 예약_취소_성공() {
+
+        final Reservation reservation = mock(Reservation.class);
+
+        ReservationDto.Cancel cancel = mock(ReservationDto.Cancel.class);
+
+        given(this.reservationRepository.findMyReservation(anyLong()))
+                .willReturn(Optional.of(reservation));
+
+        willCallRealMethod().given(reservation)
+                .cancel();
+
+        this.sut.cancel(cancel);
+
+        then(this.reservationRepository).should(times(1))
+                .findMyReservation(anyLong());
+
+        then(reservation).should(times(1))
+                .cancel();
+    }
+
 }
