@@ -4,6 +4,7 @@ import io.keede.travely.core.config.entity.BaseEntity;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.user.entity.User;
 import io.keede.travely.core.external.payment.publish.RefundPayment;
+import io.keede.travely.core.external.payment.publish.SettlePayment;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -54,4 +55,15 @@ public class Reservation extends BaseEntity {
         );
     }
 
+    public SettlePayment toSettlePayment(
+           final Long lodgingId,
+           final Long userId,
+           final Reservation reservation
+    ) {
+        return new SettlePayment(
+                lodgingId,
+                userId,
+                reservation
+        );
+    }
 }

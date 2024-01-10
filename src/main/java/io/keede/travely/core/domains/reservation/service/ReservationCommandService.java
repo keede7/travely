@@ -24,7 +24,6 @@ public class ReservationCommandService {
     private final UserRepository userRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-
     public ReservationCommandService(
             final ReservationRepository reservationRepository,
             final LodgingRepository lodgingRepository,
@@ -49,7 +48,15 @@ public class ReservationCommandService {
 
         Reservation reservation = new Reservation(lodging, user);
 
-        reservationRepository.save(reservation);
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        this.applicationEventPublisher.publishEvent(
+                reservation.toSettlePayment(
+                    lodging.getId(),
+                    user.getId(),
+                    savedReservation
+                )
+        );
     }
 
     @Transactional
