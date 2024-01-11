@@ -55,6 +55,7 @@ public class ReservationCommandService {
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
+        // TODO : 이벤트 처리부에서 예약 등록을 할지 결정
         this.applicationEventPublisher.publishEvent(
                 reservation.toSettlePayment(
                     lodging.getId(),

@@ -35,7 +35,6 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "payment_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Payment payment;
 
-    // 예약 상태 관련 도메인
     public Reservation(
             final Lodging lodging,
             final User user,
@@ -46,19 +45,13 @@ public class Reservation extends BaseEntity {
         this.payment = payment;
     }
 
-    // 예약 취소하기
     public void cancel() {
         this.remove();
     }
 
-    // 예약 변경하기
-    public void change(final Lodging lodging) {
-
-    }
-
     public RefundPayment toRefundPayment() {
         return new RefundPayment(
-                this.getId()
+                this.payment
         );
     }
 
