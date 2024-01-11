@@ -41,12 +41,13 @@ public class Payment extends BaseEntity {
         this.paymentStatus = paymentStatus;
     }
 
-    public static Payment paid(
-            final BigDecimal price
+    public static Payment pay(
+            final BigDecimal price,
+            final PaymentType paymentType
     ) {
         return new Payment(
                 price,
-                PaymentType.CARD,
+                paymentType,
                 PaymentStatus.COMPLETE
         );
     }

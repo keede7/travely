@@ -1,7 +1,10 @@
 package io.keede.travely.core.domains.reservation.dto;
 
 import io.keede.travely.core.domains.payment.dto.PaymentDto;
+import io.keede.travely.core.domains.payment.entity.Payment;
 import io.keede.travely.core.domains.payment.entity.PaymentType;
+
+import java.math.BigDecimal;
 
 /**
  * @author kyh
@@ -13,11 +16,18 @@ public class ReservationDto {
             Long userId,
             PaymentDto.Paid paid
     ) {
-        public long getPrice() {
+        public Payment toPayment() {
+            return Payment.pay(
+                    BigDecimal.valueOf(this.getPrice()),
+                    this.getPaymentType()
+            );
+        }
+
+        private long getPrice() {
             return this.paid.price();
         }
 
-        public PaymentType getPaymentType() {
+        private PaymentType getPaymentType() {
             return this.paid.paymentType();
         }
     }
