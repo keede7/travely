@@ -49,7 +49,7 @@ public class ReservationCommandService {
         User user = this.userRepository.findById(create.userId())
                 .orElseThrow(BusinessException::new);
 
-        Payment payment = Payment.paid(BigDecimal.TEN);
+        Payment payment = Payment.paid(BigDecimal.valueOf(create.getPrice()));
 
         Reservation reservation = new Reservation(lodging, user, payment);
 
