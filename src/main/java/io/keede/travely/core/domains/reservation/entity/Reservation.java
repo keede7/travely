@@ -2,6 +2,7 @@ package io.keede.travely.core.domains.reservation.entity;
 
 import io.keede.travely.core.config.entity.BaseEntity;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
+import io.keede.travely.core.domains.payment.entity.Payment;
 import io.keede.travely.core.domains.user.entity.User;
 import io.keede.travely.core.external.payment.publish.RefundPayment;
 import io.keede.travely.core.external.payment.publish.SettlePayment;
@@ -30,13 +31,19 @@ public class Reservation extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+    @JoinColumn(name = "payment_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private Payment payment;
+
     // 예약 상태 관련 도메인
     public Reservation(
             final Lodging lodging,
-            final User user
+            final User user,
+            final Payment payment
     ) {
         this.lodging = lodging;
         this.user = user;
+        this.payment = payment;
     }
 
     // 예약 취소하기

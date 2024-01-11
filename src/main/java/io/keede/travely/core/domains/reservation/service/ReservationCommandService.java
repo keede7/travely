@@ -2,6 +2,7 @@ package io.keede.travely.core.domains.reservation.service;
 
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.payment.entity.Payment;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
 import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
@@ -11,6 +12,8 @@ import io.keede.travely.core.exception.service.BusinessException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 /**
 * @author keede
@@ -46,7 +49,9 @@ public class ReservationCommandService {
         User user = this.userRepository.findById(create.userId())
                 .orElseThrow(BusinessException::new);
 
-        Reservation reservation = new Reservation(lodging, user);
+        Payment payment = Payment.paid(BigDecimal.TEN);
+
+        Reservation reservation = new Reservation(lodging, user, payment);
 
         Reservation savedReservation = reservationRepository.save(reservation);
 
