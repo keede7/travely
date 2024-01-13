@@ -37,13 +37,13 @@ class ReservationQueryServiceTest {
 
         Reservation reservation = mock(Reservation.class);
 
-        given(this.reservationReader.getMyReservation(myReservationDto))
+        given(this.reservationReader.findMyReservation(myReservationDto))
                 .willReturn(reservation);
 
         Reservation myReservation = this.sut.getMyReservation(myReservationDto);
 
         then(this.reservationReader).should(times(1))
-                .getMyReservation(myReservationDto);
+                .findMyReservation(myReservationDto);
 
     }
 

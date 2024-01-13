@@ -3,8 +3,6 @@ package io.keede.travely.core.domains.reservation.service;
 
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
-import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
-import io.keede.travely.core.exception.service.BusinessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +25,7 @@ public class ReservationQueryService {
 
     @Transactional(readOnly = true)
     public Reservation getMyReservation(ReservationDto.MyReservation myReservationDto) {
-        return this.reservationReader.getMyReservation(myReservationDto);
+        return this.reservationReader.findMyReservation(myReservationDto);
     }
 
     @Transactional(readOnly = true)

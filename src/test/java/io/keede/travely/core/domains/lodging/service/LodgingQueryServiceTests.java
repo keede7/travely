@@ -37,7 +37,7 @@ public class LodgingQueryServiceTests {
         given(lodgingReader.findLodgingAll())
                 .willReturn(new ArrayList<>());
 
-        List<Lodging> lodgings = sut.findAll();
+        List<Lodging> lodgings = sut.getAll();
 
         then(this.lodgingReader)
                 .should(times(1))

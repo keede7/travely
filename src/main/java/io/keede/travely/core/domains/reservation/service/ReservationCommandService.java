@@ -73,7 +73,7 @@ public class ReservationCommandService {
          *  5. 예약 결제정보를 취소한다. ( 외부 API )
          *      5-1 환불시킨다.
          */
-        Reservation reservation = this.reservationReader.getMyReservation(cancel.reservationId());
+        Reservation reservation = this.reservationReader.findMyReservation(cancel.reservationId());
 
         reservation.cancel();
 

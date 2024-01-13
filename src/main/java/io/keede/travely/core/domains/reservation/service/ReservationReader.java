@@ -32,14 +32,14 @@ public class ReservationReader {
         return this.reservationRepository.findMyReservations(userId);
     }
 
-    public Reservation getMyReservation(ReservationDto.MyReservation myReservationDto) {
+    public Reservation findMyReservation(ReservationDto.MyReservation myReservationDto) {
         Long reservationId = myReservationDto.reservationId();
 
         return this.reservationRepository.findMyReservation(reservationId)
                 .orElseThrow(BusinessException::new);
     }
 
-    public Reservation getMyReservation(Long reservationId) {
+    public Reservation findMyReservation(Long reservationId) {
         return this.reservationRepository.findMyReservation(reservationId)
                 .orElseThrow(BusinessException::new);
     }

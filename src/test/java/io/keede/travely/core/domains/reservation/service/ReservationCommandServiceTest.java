@@ -109,7 +109,7 @@ class ReservationCommandServiceTest {
 
         ReservationDto.Cancel cancel = mock(ReservationDto.Cancel.class);
 
-        given(this.reservationReader.getMyReservation(anyLong()))
+        given(this.reservationReader.findMyReservation(anyLong()))
                 .willReturn(reservation);
 
         willCallRealMethod().given(reservation)
@@ -118,7 +118,7 @@ class ReservationCommandServiceTest {
         this.sut.cancel(cancel);
 
         then(this.reservationReader).should(times(1))
-                .getMyReservation(anyLong());
+                .findMyReservation(anyLong());
 
         then(reservation).should(times(1))
                 .cancel();

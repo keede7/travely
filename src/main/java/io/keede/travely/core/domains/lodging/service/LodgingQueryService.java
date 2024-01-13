@@ -20,7 +20,7 @@ public class LodgingQueryService {
         this.lodgingReader = lodgingReader;
     }
 
-    public List<Lodging> findAll() {
+    public List<Lodging> getAll() {
         return this.lodgingReader.findLodgingAll();
     }
 }
