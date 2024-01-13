@@ -3,62 +3,62 @@ package io.keede.travely.core.domains.reservation.service;
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
-import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
 
 /**
-* @author keede
-* Created on 2023/12/4
-*/
+ * @author keede
+ * Created on 2023/12/4
+ */
 @BusinessMockTestConfiguration
 class ReservationQueryServiceTest {
 
     @Mock
-    private ReservationRepository reservationRepository;
+    private ReservationReader reservationReader;
 
     private ReservationQueryService sut;
 
     @BeforeEach
     void setUp() {
         this.sut = new ReservationQueryService(
-                this.reservationRepository
+                this.reservationReader
         );
     }
 
     @Test
     void 내_예약_조회_성공() {
 
-        final ReservationDto.MyReservation myReservation = mock(ReservationDto.MyReservation.class);
+        final ReservationDto.MyReservation myReservationDto = mock(ReservationDto.MyReservation.class);
 
-        given(this.reservationRepository.findMyReservation(anyLong()))
-                .willReturn(Optional.of(mock(Reservation.class)));
+        Reservation reservation = mock(Reservation.class);
 
-        this.sut.getMyReservation(myReservation);
+        given(this.reservationReader.getMyReservation(myReservationDto))
+                .willReturn(reservation);
 
-        then(this.reservationRepository).should(times(1))
-                .findMyReservation(anyLong());
+        Reservation myReservation = this.sut.getMyReservation(myReservationDto);
+
+        then(this.reservationReader).should(times(1))
+                .getMyReservation(myReservationDto);
 
     }
 
     @Test
     void 내_모든_예약_조회_성공() {
 
-        final ReservationDto.MyReservations myReservations = mock(ReservationDto.MyReservations.class);
+        final ReservationDto.MyReservations myReservationsDto = mock(ReservationDto.MyReservations.class);
 
-        given(this.reservationRepository.findMyReservations(anyLong()))
+        given(this.reservationReader.getMyReservations(myReservationsDto))
                 .willReturn(mock(List.class));
 
-        this.sut.getMyReservations(myReservations);
+        List<Reservation> reservations = this.sut.getMyReservations(myReservationsDto);
 
-        then(this.reservationRepository).should(times(1))
-                .findMyReservations(anyLong());
+        then(this.reservationReader).should(times(1))
+                .getMyReservations(myReservationsDto);
 
     }
 }

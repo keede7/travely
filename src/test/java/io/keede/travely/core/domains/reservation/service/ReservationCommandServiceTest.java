@@ -2,19 +2,16 @@ package io.keede.travely.core.domains.reservation.service;
 
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.lodging.service.LodgingReader;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
-import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
 import io.keede.travely.core.domains.user.entity.User;
-import io.keede.travely.core.domains.user.entity.UserRepository;
+import io.keede.travely.core.domains.user.service.UserReader;
 import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,11 +28,16 @@ import static org.mockito.Mockito.times;
 class ReservationCommandServiceTest {
 
     @Mock
-    private ReservationRepository reservationRepository;
+    private ReservationWriter reservationWriter;
+
     @Mock
-    private LodgingRepository lodgingRepository;
+    private ReservationReader reservationReader;
+
     @Mock
-    private UserRepository userRepository;
+    private LodgingReader lodgingReader;
+
+    @Mock
+    private UserReader userReader;
 
     @Mock
     private ApplicationEventPublisher applicationEventPublisher;
@@ -45,9 +47,10 @@ class ReservationCommandServiceTest {
     @BeforeEach
     void setUp() {
         this.sut = new ReservationCommandService(
-                this.reservationRepository,
-                this.lodgingRepository,
-                this.userRepository,
+                this.reservationWriter,
+                this.reservationReader,
+                this.lodgingReader,
+                this.userReader,
                 this.applicationEventPublisher
         );
     }
@@ -61,20 +64,20 @@ class ReservationCommandServiceTest {
 
         final ReservationDto.Create create = mock(ReservationDto.Create.class);
 
-        given(this.lodgingRepository.findById(anyLong()))
-                .willReturn(Optional.of(lodging));
-        given(this.userRepository.findById(anyLong()))
-                .willReturn(Optional.of(user));
-        given(this.reservationRepository.save(any(Reservation.class)))
+        given(this.lodgingReader.findById(anyLong()))
+                .willReturn(lodging);
+        given(this.userReader.findById(anyLong()))
+                .willReturn(user);
+        given(this.reservationWriter.save(any(Reservation.class)))
                 .willReturn(reservation);
 
         this.sut.create(create);
 
-        then(this.lodgingRepository).should(times(1))
+        then(this.lodgingReader).should(times(1))
                 .findById(anyLong());
-        then(this.userRepository).should(times(1))
+        then(this.userReader).should(times(1))
                 .findById(anyLong());
-        then(this.reservationRepository).should(times(1))
+        then(this.reservationWriter).should(times(1))
                 .save(any(Reservation.class));
 
     }
@@ -86,8 +89,8 @@ class ReservationCommandServiceTest {
 
         final ReservationDto.Create create = mock(ReservationDto.Create.class);
 
-        given(this.lodgingRepository.findById(anyLong()))
-                .willReturn(Optional.of(lodging));
+        given(this.lodgingReader.findById(anyLong()))
+                .willReturn(lodging);
 
         willThrow(BusinessException.class).given(lodging)
                 .checkToAllowReservation();
@@ -106,16 +109,16 @@ class ReservationCommandServiceTest {
 
         ReservationDto.Cancel cancel = mock(ReservationDto.Cancel.class);
 
-        given(this.reservationRepository.findMyReservation(anyLong()))
-                .willReturn(Optional.of(reservation));
+        given(this.reservationReader.getMyReservation(anyLong()))
+                .willReturn(reservation);
 
         willCallRealMethod().given(reservation)
                 .cancel();
 
         this.sut.cancel(cancel);
 
-        then(this.reservationRepository).should(times(1))
-                .findMyReservation(anyLong());
+        then(this.reservationReader).should(times(1))
+                .getMyReservation(anyLong());
 
         then(reservation).should(times(1))
                 .cancel();

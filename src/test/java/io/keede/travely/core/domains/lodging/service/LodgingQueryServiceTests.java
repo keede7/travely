@@ -2,10 +2,8 @@ package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
@@ -22,26 +20,26 @@ import static org.mockito.BDDMockito.*;
 public class LodgingQueryServiceTests {
 
     @Mock
-    private LodgingRepository lodgingRepository;
+    private LodgingReader lodgingReader;
 
     private LodgingQueryService sut;
 
     @BeforeEach
     void setUp() {
         this.sut = new LodgingQueryService(
-                this.lodgingRepository
+                this.lodgingReader
         );
     }
 
     @Test
     void 숙소_전체_조회() {
 
-        given(lodgingRepository.findLodgingAll())
+        given(lodgingReader.findLodgingAll())
                 .willReturn(new ArrayList<>());
 
-        List<Lodging> lodgings = sut.getLodgings();
+        List<Lodging> lodgings = sut.findAll();
 
-        then(lodgingRepository)
+        then(this.lodgingReader)
                 .should(times(1))
                 .findLodgingAll();
 

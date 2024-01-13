@@ -1,19 +1,15 @@
 package io.keede.travely.core.domains.reservation.service;
 
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.lodging.service.LodgingReader;
 import io.keede.travely.core.domains.payment.entity.Payment;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
-import io.keede.travely.core.domains.reservation.entity.ReservationRepository;
 import io.keede.travely.core.domains.user.entity.User;
-import io.keede.travely.core.domains.user.entity.UserRepository;
-import io.keede.travely.core.exception.service.BusinessException;
+import io.keede.travely.core.domains.user.service.UserReader;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 /**
 * @author keede
@@ -22,38 +18,40 @@ import java.math.BigDecimal;
 @Service
 public class ReservationCommandService {
 
-    private final ReservationRepository reservationRepository;
-    private final LodgingRepository lodgingRepository;
-    private final UserRepository userRepository;
+    private final ReservationWriter reservationWriter;
+    private final ReservationReader reservationReader;
+    private final LodgingReader lodgingReader;
+    private final UserReader userReader;
+
     private final ApplicationEventPublisher applicationEventPublisher;
 
     public ReservationCommandService(
-            final ReservationRepository reservationRepository,
-            final LodgingRepository lodgingRepository,
-            final UserRepository userRepository,
+            final ReservationWriter reservationWriter,
+            final ReservationReader reservationReader,
+            final LodgingReader lodgingReader,
+            final UserReader userReader,
             final ApplicationEventPublisher applicationEventPublisher
     ) {
-        this.reservationRepository = reservationRepository;
-        this.lodgingRepository = lodgingRepository;
-        this.userRepository = userRepository;
+        this.reservationWriter = reservationWriter;
+        this.reservationReader = reservationReader;
+        this.lodgingReader = lodgingReader;
+        this.userReader = userReader;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional
     public void create(final ReservationDto.Create create) {
-        Lodging lodging = this.lodgingRepository.findById(create.lodgingId())
-                .orElseThrow(BusinessException::new);
+        Lodging lodging = this.lodgingReader.findById(create.lodgingId());
 
         lodging.checkToAllowReservation();
 
-        User user = this.userRepository.findById(create.userId())
-                .orElseThrow(BusinessException::new);
+        User user = this.userReader.findById(create.userId());
 
         Payment payment = create.toPayment();
 
         Reservation reservation = new Reservation(lodging, user, payment);
 
-        Reservation savedReservation = reservationRepository.save(reservation);
+        Reservation savedReservation = this.reservationWriter.save(reservation);
 
         // TODO : 이벤트 처리부에서 예약 등록을 할지 결정
         this.applicationEventPublisher.publishEvent(
@@ -75,9 +73,7 @@ public class ReservationCommandService {
          *  5. 예약 결제정보를 취소한다. ( 외부 API )
          *      5-1 환불시킨다.
          */
-
-        Reservation reservation = this.reservationRepository.findMyReservation(cancel.reservationId())
-                .orElseThrow(BusinessException::new);
+        Reservation reservation = this.reservationReader.getMyReservation(cancel.reservationId());
 
         reservation.cancel();
 

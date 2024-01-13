@@ -2,11 +2,7 @@ package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
-import io.keede.travely.core.exception.ErrorResponse;
-import io.keede.travely.core.exception.service.BusinessException;
 import jakarta.annotation.PostConstruct;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,10 +16,15 @@ import java.time.LocalDateTime;
 @Service
 public class LodgingCommandService {
 
-    private final LodgingRepository lodgingRepository;
+    private final LodgingReader lodgingReader;
+    private final LodgingWriter lodgingWriter;
 
-    public LodgingCommandService(final LodgingRepository lodgingRepository) {
-        this.lodgingRepository = lodgingRepository;
+    public LodgingCommandService(
+            final LodgingReader lodgingReader,
+            final LodgingWriter lodgingWriter
+    ) {
+        this.lodgingReader = lodgingReader;
+        this.lodgingWriter = lodgingWriter;
     }
 
     @PostConstruct
@@ -38,7 +39,7 @@ public class LodgingCommandService {
                 LocalDateTime.MAX
         );
 
-        lodgingRepository.save(lodging);
+        this.lodgingWriter.save(lodging);
     }
 
     @Transactional
@@ -46,7 +47,7 @@ public class LodgingCommandService {
 
         Lodging entity = create.toEntity();
 
-        lodgingRepository.save(entity);
+        this.lodgingWriter.save(entity);
 
         return entity.toInformation();
     }
@@ -56,13 +57,7 @@ public class LodgingCommandService {
 
         final Long removeId = remove.id();
 
-        Lodging entity = lodgingRepository.findById(removeId)
-                .orElseThrow(
-                        () -> new BusinessException(
-                                ErrorResponse.COMMON,
-                                String.format("to Remove Id : %d", removeId)
-                        )
-                );
+        Lodging entity = this.lodgingReader.findById(removeId);
 
         entity.remove();
 

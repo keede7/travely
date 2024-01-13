@@ -17,28 +17,21 @@ import java.util.List;
 @Service
 public class ReservationQueryService {
 
-    private final ReservationRepository reservationRepository;
+    private final ReservationReader reservationReader;
 
-    public ReservationQueryService(final ReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
+    public ReservationQueryService(
+            final ReservationReader reservationReader
+    ) {
+        this.reservationReader = reservationReader;
     }
 
     @Transactional(readOnly = true)
     public Reservation getMyReservation(ReservationDto.MyReservation myReservationDto) {
-        Long reservationId = myReservationDto.reservationId();
-
-        Reservation reservation = this.reservationRepository.findMyReservation(reservationId)
-                .orElseThrow(BusinessException::new);
-
-        return reservation;
+        return this.reservationReader.getMyReservation(myReservationDto);
     }
 
     @Transactional(readOnly = true)
     public List<Reservation> getMyReservations(ReservationDto.MyReservations myReservationsDto) {
-        Long userId = myReservationsDto.userId();
-
-        List<Reservation> reservations = this.reservationRepository.findMyReservations(userId);
-
-        return reservations;
+        return this.reservationReader.getMyReservations(myReservationsDto);
     }
 }
