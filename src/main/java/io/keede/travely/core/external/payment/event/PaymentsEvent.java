@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
-* @author keede
-* Created on 2024/01/07
-*/
+ * @author keede
+ * Created on 2024/01/07
+ */
 @Slf4j
 @Component
+@Transactional
 public class PaymentsEvent {
 
     @TransactionalEventListener
@@ -22,10 +23,15 @@ public class PaymentsEvent {
             final RefundPayment refundPayment
     ) {
         log.info("Refund Payment : {}", refundPayment);
+
+        Payment payment = refundPayment.payment();
+
+        payment.cancel();
+
+        this.refund(payment);
     }
 
     // TODO : 같은 트랜잭션에 참여할 것으로 판단
-    @Transactional
     @TransactionalEventListener
     public void settle(
             final SettlePayment settlePayment
@@ -45,11 +51,21 @@ public class PaymentsEvent {
     private void pay(
             final Payment payment
     ) {
-        if(payment == null) {
-          throw new RuntimeException("결제에 실패했습니다.");
+        if (payment == null) {
+            throw new RuntimeException("결제에 실패했습니다.");
         }
 
         log.info("결제 API 호출하기");
+    }
+
+    private void refund(
+            final Payment payment
+    ) {
+        if(payment == null) {
+            throw new RuntimeException("환불에 실패했습니다.");
+        }
+
+        log.info("환불 API 호출하기");
     }
 
 }

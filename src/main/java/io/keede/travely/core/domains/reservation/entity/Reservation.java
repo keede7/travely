@@ -51,7 +51,7 @@ public class Reservation extends BaseEntity {
 
     public RefundPayment toRefundPayment() {
         return new RefundPayment(
-                this
+                this.payment
         );
     }
 
