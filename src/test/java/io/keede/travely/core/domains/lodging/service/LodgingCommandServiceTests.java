@@ -4,6 +4,8 @@ import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
 import io.keede.travely.core.domains.lodging.fixture.LodgingFixture;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingWriter;
 import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

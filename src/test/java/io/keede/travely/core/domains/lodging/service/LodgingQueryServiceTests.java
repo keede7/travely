@@ -2,6 +2,7 @@ package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

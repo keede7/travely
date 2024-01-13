@@ -1,4 +1,4 @@
-package io.keede.travely.core.domains.reservation.service;
+package io.keede.travely.core.domains.reservation.service.adapter;
 
 
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;

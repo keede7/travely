@@ -3,6 +3,7 @@ package io.keede.travely.core.domains.payment.service;
 
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.payment.entity.Payment;
+import io.keede.travely.core.domains.payment.service.adapter.PaymentWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

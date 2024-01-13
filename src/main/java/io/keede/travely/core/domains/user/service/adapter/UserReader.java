@@ -1,4 +1,4 @@
-package io.keede.travely.core.domains.user.service;
+package io.keede.travely.core.domains.user.service.adapter;
 
 import io.keede.travely.core.domains.user.entity.User;
 import io.keede.travely.core.domains.user.entity.UserRepository;

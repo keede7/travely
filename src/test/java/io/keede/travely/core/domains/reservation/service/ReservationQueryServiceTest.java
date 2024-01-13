@@ -3,6 +3,7 @@ package io.keede.travely.core.domains.reservation.service;
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
+import io.keede.travely.core.domains.reservation.service.adapter.ReservationReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

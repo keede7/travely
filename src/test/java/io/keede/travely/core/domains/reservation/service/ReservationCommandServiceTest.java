@@ -2,11 +2,13 @@ package io.keede.travely.core.domains.reservation.service;
 
 import io.keede.travely.core.domains.config.BusinessMockTestConfiguration;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.service.LodgingReader;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
 import io.keede.travely.core.domains.reservation.dto.ReservationDto;
 import io.keede.travely.core.domains.reservation.entity.Reservation;
+import io.keede.travely.core.domains.reservation.service.adapter.ReservationReader;
+import io.keede.travely.core.domains.reservation.service.adapter.ReservationWriter;
 import io.keede.travely.core.domains.user.entity.User;
-import io.keede.travely.core.domains.user.service.UserReader;
+import io.keede.travely.core.domains.user.service.adapter.UserReader;
 import io.keede.travely.core.exception.service.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -2,6 +2,8 @@ package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.lodging.dto.LodgingDto;
 import io.keede.travely.core.domains.lodging.entity.Lodging;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingWriter;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

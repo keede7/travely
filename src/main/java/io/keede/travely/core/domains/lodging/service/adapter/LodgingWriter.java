@@ -1,4 +1,4 @@
-package io.keede.travely.core.domains.lodging.service;
+package io.keede.travely.core.domains.lodging.service.adapter;
 
 
 import io.keede.travely.core.domains.lodging.entity.Lodging;

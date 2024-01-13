@@ -1,4 +1,4 @@
-package io.keede.travely.core.domains.payment.service;
+package io.keede.travely.core.domains.payment.service.adapter;
 
 import io.keede.travely.core.domains.payment.entity.Payment;
 import io.keede.travely.core.domains.payment.entity.PaymentRepository;

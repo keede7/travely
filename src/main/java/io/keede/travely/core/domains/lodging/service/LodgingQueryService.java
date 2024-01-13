@@ -1,6 +1,7 @@
 package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.lodging.entity.Lodging;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
