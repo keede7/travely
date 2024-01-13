@@ -42,7 +42,9 @@ public class ReservationCommandService {
     }
 
     @Transactional
-    public void create(final ReservationDto.Create create) {
+    public void create(
+            final ReservationDto.Create create
+    ) {
         Lodging lodging = this.lodgingReader.findById(create.lodgingId());
 
         lodging.checkToAllowReservation();
@@ -53,20 +55,22 @@ public class ReservationCommandService {
 
         Reservation reservation = new Reservation(lodging, user, payment);
 
-        Reservation savedReservation = this.reservationWriter.save(reservation);
+        this.reservationWriter.save(reservation);
 
         // TODO : 이벤트 처리부에서 예약 등록을 할지 결정
         this.applicationEventPublisher.publishEvent(
                 reservation.toSettlePayment(
                     lodging.getId(),
                     user.getId(),
-                    savedReservation
+                    payment
                 )
         );
     }
 
     @Transactional
-    public void cancel(final ReservationDto.Cancel cancel) {
+    public void cancel(
+            final ReservationDto.Cancel cancel
+    ) {
         /**
          *  1. 해당 예약이 있는지 조회한다,
          *  2. 해당 사용자가 맞는지 조회한다 ( 이후 프로세스 적용시 필요없음 )

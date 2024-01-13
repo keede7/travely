@@ -58,12 +58,12 @@ public class Reservation extends BaseEntity {
     public SettlePayment toSettlePayment(
            final Long lodgingId,
            final Long userId,
-           final Reservation reservation
+           final Payment payment
     ) {
         return new SettlePayment(
                 lodgingId,
                 userId,
-                reservation
+                payment
         );
     }
 }
