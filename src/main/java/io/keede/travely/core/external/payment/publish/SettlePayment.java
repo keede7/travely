@@ -1,7 +1,7 @@
 package io.keede.travely.core.external.payment.publish;
 
 
-import io.keede.travely.core.domains.reservation.entity.Reservation;
+import io.keede.travely.core.domains.payment.entity.Payment;
 
 /**
  * @author kyh
@@ -10,6 +10,6 @@ import io.keede.travely.core.domains.reservation.entity.Reservation;
 public record SettlePayment(
         Long lodgingId,
         Long userId,
-        Reservation reservation
+        Payment payment
 ) {
 }

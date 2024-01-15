@@ -1,7 +1,7 @@
 package io.keede.travely.core.domains.lodging.service;
 
 import io.keede.travely.core.domains.lodging.entity.Lodging;
-import io.keede.travely.core.domains.lodging.entity.LodgingRepository;
+import io.keede.travely.core.domains.lodging.service.adapter.LodgingReader;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,13 +13,15 @@ import java.util.List;
 @Service
 public class LodgingQueryService {
 
-    private final LodgingRepository lodgingRepository;
+    private final LodgingReader lodgingReader;
 
-    public LodgingQueryService(final LodgingRepository lodgingRepository) {
-        this.lodgingRepository = lodgingRepository;
+    public LodgingQueryService(
+            final LodgingReader lodgingReader
+    ) {
+        this.lodgingReader = lodgingReader;
     }
 
-    public List<Lodging> getLodgings() {
-        return lodgingRepository.findLodgingAll();
+    public List<Lodging> getAll() {
+        return this.lodgingReader.findLodgingAll();
     }
 }

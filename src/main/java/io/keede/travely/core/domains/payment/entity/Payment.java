@@ -52,4 +52,8 @@ public class Payment extends BaseEntity {
         );
     }
 
+    public void cancel() {
+        this.remove();
+    }
+
 }
