@@ -30,7 +30,7 @@ public class LodgingReader {
     }
 
     public Lodging findById(Long lodgingId) {
-        return this.lodgingRepository.findById(lodgingId)
+        return this.lodgingRepository.findLodgingById(lodgingId)
                 .orElseThrow(
                         () -> new BusinessException(
                                 ErrorResponse.COMMON,
