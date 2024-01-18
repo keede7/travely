@@ -26,4 +26,11 @@ public class UserReader {
         return this.userRepository.findById(userId)
                 .orElseThrow(BusinessException::new);
     }
+
+    public User findUserByEmail(String email) {
+        return this.userRepository.findUserByEmail(email)
+                .orElseThrow(
+                        () -> new RuntimeException("등록되지 않은 이메일입니다.")
+                );
+    }
 }
