@@ -3,6 +3,7 @@ package io.keede.travely.core.config.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.keede.travely.core.domains.user.service.adapter.UserReader;
 import io.keede.travely.core.web.security.dto.LoginDto;
 import io.keede.travely.core.domains.user.entity.User;
 import io.keede.travely.core.domains.user.entity.UserRepository;
@@ -22,18 +23,18 @@ import java.util.Date;
 @Component
 public final class JwtTokenProvider implements InitializingBean {
 
-    private final UserRepository userRepository;
+    private final UserReader userReader;
     private final String secret;
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
     private SecretKey key;
 
     public JwtTokenProvider(
-            final UserRepository userRepository,
+            final UserReader userReader,
             @Value("${jwt.secret}") final String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds
     ) {
-        this.userRepository = userRepository;
+        this.userReader = userReader;
         this.secret = secret;
         this.accessTokenValidityInMilliseconds = tokenValidityInSeconds * 1000; // 토큰 만료시간에 사용,
         this.refreshTokenValidityInMilliseconds = tokenValidityInSeconds * 5000;
@@ -51,10 +52,7 @@ public final class JwtTokenProvider implements InitializingBean {
 
         log.info("loginDto : {}", loginDto);
 
-        User user = this.userRepository.findUserByEmail(loginDto.email())
-                .orElseThrow(
-                        () -> new RuntimeException("등록되지 않은 사용자입니다.")
-                );
+        User user = this.userReader.findUserByEmail(loginDto.email());
 
         Date createdAt = new Date();
 
